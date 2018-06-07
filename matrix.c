@@ -11,61 +11,48 @@ double get_time()
 
 int main(int argc, char** argv)
 {
-  if (argc != 2) {
-    printf("usage: %s N\n", argv[0]);
-    return -1;
-  }
+ 
 
-  int n = atoi(argv[1]);
-  double* a = (double*)malloc(n * n * sizeof(double)); // Matrix A
-  double* b = (double*)malloc(n * n * sizeof(double)); // Matrix B
-  double* c = (double*)malloc(n * n * sizeof(double)); // Matrix C
-
-  // Initialize the matrices to some values.
-  int i, j,k;
-  for (i = 0; i < n; i++) {
-    for (j = 0; j < n; j++) {
-      a[i * n + j] = i * n + j; // A[i][j]
-      b[i * n + j] = j * n + i; // B[i][j]
-      c[i * n + j] = 0; // C[i][j]
-    }
-  }
-
-  double begin = get_time();
-
-  /**************************************/
-  /* Write code to calculate C = A * B. */
-  /**************************************/
-  double value;
-  for(i=0;i<n;i++){
-    for(j=0;j<n;j++){
-      value = 0.0;
-      for(k=0;k<n;k++){
-	value += a[i * n + k] * b[k * n + j];
+  int n = 1;
+  do{
+    double* a = (double*)malloc(n * n * sizeof(double)); // Matrix A
+    double* b = (double*)malloc(n * n * sizeof(double)); // Matrix B
+    double* c = (double*)malloc(n * n * sizeof(double)); // Matrix C
+    
+    // Initialize the matrices to some values.
+    int i, j,k;
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+	a[i * n + j] = i * n + j; // A[i][j]
+	b[i * n + j] = j * n + i; // B[i][j]
+	c[i * n + j] = 0; // C[i][j]
       }
-      c[i * n + j] = value;
     }
-  }
 
-
-	
-  double end = get_time();
-  printf("time: %.6lf sec\n", end - begin);
-
-  // Print C for debugging. Comment out the print before measuring the execution time.
-  double sum = 0;
-  for (i = 0; i < n; i++) {
-    for (j = 0; j < n; j++) {
-      sum += c[i * n + j];
-      //printf("c[%d][%d]=%lf\n", i, j, c[i * n + j]);
+    double begin = get_time();
+    
+    /**************************************/
+    /* Write code to calculate C = A * B. */
+    /**************************************/
+    double value;
+    for(i=0;i<n;i++){
+      for(j=0;j<n;j++){
+	value = 0.0;
+	for(k=0;k<n;k++){
+	  value += a[i * n + k] * b[k * n + j];
+	}
+	c[i * n + j] = value;
+      }
     }
-  }
-  // Print out the sum of all values in C.
-  // This should be 450 for N=3, 3680 for N=4, and 18250 for N=5.
-  printf("sum: %.6lf\n", sum);
+        
+    double end = get_time();
+    printf("%d %.6lf\n",n, end - begin);
+    n += 1;
 
-  free(a);
-  free(b);
-  free(c);
+    
+    free(a);
+    free(b);
+    free(c);
+  }while(n < 101);
   return 0;
 }
